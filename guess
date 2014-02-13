@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# this program asks the user to guess a number within a certain range.
+# it only allows one guess and tells him whether the guess is too large
+# too small, or correct.
+#
+# the 'secret' number and the range is contained in a datafile at
+#  /pub/cs/gboyd/cs160b/labs/gnum
+# with the format 
+#  min max secret
+# Assumptions: lots:
+#   1. the file is assumed to exist and be readable
+#   2. the file is assumed to contain three integers on a single
+#       line with spaces as delimiters with the correct relationship
+#   3. the user's input is assumed to 'look like' an integer
+#
+inrange() {
+    # inrange is a boolean function. It takes three arguments: 
+	# rangemin, rangemax and theguess, where 
+	#     rangemin is the minimum value of the range and
+	#     rangemax is the maximum value of the range that
+	#     theguess can be in.
+	#   inrange simply sets its exit status to indicate whether 
+	#   theguess is between rangemin and rangemax, inclusive, or
+	#   for you mathematicians, is in [rangemin,rangemax]
+    # for lab4, each argument is assumed to be an integer.
+    local rangemin=$1 rangemax=$2 theguess=$3 
+    [ "$theguess" -gt "$rangemax" ] && return 1
+    [ "$theguess" -lt "$rangemin" ] && return 1
+    return 0
+}
+
+# the following line reads the three values in from the file:
+read min max secret < /pub/cs/gboyd/cs160b/labs/gnum
+
+# now enter your code to:
+#  1. announce the range for the guess
+#  2. get the user's guess
+#  3. check if it is inrange by calling the function. If it
+#      is not inrange, give an error message and exit
+#  4. compare the guess to the secret number, telling the user
+#      whether their guess is too high, too low, or correct!
+
+echo "The number is between $min and $max."
+read -p "Enter your guess:" theguess
+if ! inrange $min $max $theguess; then
+    echo "Your guess is not between $min and $max!"  
+else
+    if [ "$theguess" -lt $secret ]; then
+        echo "The guess is lower than the secret number."
+    elif [ $theguess -gt $secret ]; then
+        echo "The guess is higher than the secret number."
+    else
+        echo "You've guessed correctly!"
+    fi
+fi
+
+
+

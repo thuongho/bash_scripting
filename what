@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+#
+#
+#
+if [ $# -ne 1 ]; then
+    echo "need a single argument"
+    exit 1
+fi
+path=$1
+if [ -L "$path" ]; then
+    if [ -e "$path" ]; then
+        echo "$path is a working symbolic link"
+    else
+        echo "$path is a broken symbolic link"
+    fi
+else
+    if [ -e "$path" ]; then
+        if [ -f "$path" ]; then
+	    echo "$path is a file"
+        elif [ -d "$path" ]; then
+	    echo "$path is a directory"
+        else
+	    echo "$path is an unknown object"
+        fi
+    else
+        echo "$path does not exist"
+    fi
+fi
+
+

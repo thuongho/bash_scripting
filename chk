@@ -1,0 +1,146 @@
+#!/bin/bash
+#
+# Creator: Thuong Ho
+# Email: tho36@mail.ccsf.edu
+# 
+# **** What this program does ****
+#
+# This program will output certain kinds of information about two different types of Unix objects: files and users
+#
+# **** How to use this program ****
+#
+# This program contains two option -f and -u
+#
+# To use this program, you will have to type into the shell the following format
+# 
+# chk -f filename or chk -u username
+# * Replace filename with the file or directory name that you want to check some information on (example chk -f my_resume)
+# 
+# chk -u username 
+# * Replace username with any username that you want to look up information on (example chk -u jdoe36)
+#
+# If you use the -f option with the format chk -f filename, the program will tell you the following information about the filename:
+#
+# * If the file exists or not
+# * If the file is a symlink, directory, file or unknown
+# * If the file is readable, writable, and executable by you 
+#
+# If you use the -u option with the format chk -u username, the program will tell you the following information about the user:
+#
+# * If the user exists in the system
+# * The home directory of the user
+# * If the user is still logged on or last logged on time
+#
+#
+# ***** Variables *****
+# -f or -u option
+c_opt=$1
+
+# the filepath or username
+c_obj=$2
+
+# this will see if the user exists in the system
+user=$(cat /etc/passwd | grep -c "^$c_obj:")
+
+# this will help find the user's home directory
+home_path=$(cat /etc/passwd | grep "^$c_obj:" | sed "s/^.*:\(\/.*$c_obj\):\/.*/\1/")
+
+# this will see if the user is still logged on
+last_count=$(last -2 $c_obj | sed 's/^.*\.[[:digit:]]\+ *//' | grep -c 'logged' | head -n1)
+
+# this will give the last logged on time of the user
+last_log=$(last -2 $c_obj | sed 's/^.*\.[[:digit:]]\+ *//' | head -n1)
+
+
+# Exiting the program with an error
+error () {
+    # error: output an error message and return
+    # the error messages contain the program name
+    # and are written to standard error
+
+    local prog=$(basename $0)
+    echo -e "$prog: $*">&2
+}
+
+fatal() {
+    # fatal: output an error message and then exit
+    # the error() function is used.
+    error "$*"
+    # if you want to output a message about how to successfully
+    # run your program (called a 'usage message'), this would
+    # be the place to do it
+
+    # now exit with an error
+    exit 1
+}
+
+[ $# -ne 2 ] && fatal "Two arguments required. Follow format chk -f filename or chk -u username"
+
+# if the user enters -f then execute this code to check filepath
+if [ "$c_opt" = '-f' ]; then
+
+# doesn't exist
+    if [ ! -e "$c_obj" ]; then
+        fatal "$c_obj is not part of this universe, it doesn't exist!"
+
+# symbolic link test    
+    else
+        if [ -L "$c_obj" ]; then
+            fatal "$c_obj is a symbolic link!"
+
+# file test
+        elif [ -f "$c_obj" ]; then
+	    echo "$c_obj is a file"
+
+# directory test
+        elif [ -d "$c_obj" ]; then
+	    echo "$c_obj is a directory"
+            
+# unknown test
+        else
+	    echo "Wow you've just discovered $c_obj! It's an unknown object"
+        fi
+    
+# test permissions
+        if [ -r "$c_obj" ]; then   
+            echo "$c_obj is readable"
+        else
+            echo "$c_obj is not readable"
+        fi
+ 
+        if [ -w "$c_obj" ]; then
+            echo "$c_obj is writable"
+        else
+            echo "$c_obj is not writable"
+        fi
+        
+        if [ -x "$c_obj" ]; then
+            echo "$c_obj is executable"
+        else
+            echo "$c_obj is not executable"
+        fi
+
+    fi
+    exit 0
+fi
+
+
+# if the user types -u, then execute this code
+ 
+if [ "$c_opt" = '-u' ]; then
+    if [ "$user" -eq 0 ]; then
+        fatal "ERROR: $c_obj does not exist in the system!"
+    else
+        echo "$c_obj's home directory is $home_path"
+        if [ "$last_count" -eq 0 ]; then
+            echo "$c_obj was last logged on $last_log"
+        else
+            echo "$c_obj is still logged on"
+        fi     
+    fi
+    exit 0
+fi
+
+# not the right option -u or -f
+[ "$c_opt" != '-u' -o "$c_opt" != '-d' ] && fatal "Please choose either the -u or -d option"
+

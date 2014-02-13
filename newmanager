@@ -1,0 +1,162 @@
+#!/bin/bash
+#
+# Documentation goes here
+# ***** What this program does *****
+# This is an interactive program that adds a new manager or updates an
+# an existing entry in the Managers file
+#
+# ***** How to use this program *****
+# * This program is interactive. It takes no argument.
+# * When the program starts, it will look for the Manager file in the 
+# current directory. It will copy from source if the file is not there.
+# * It will also check to see if the user has both read and write permissions 
+# on the file in order to proceed.
+# * The user is asked to enter the manager's dept, name, dept name, and 
+# manager's employee id.
+# * The manager's dept is unique, if the user enters a dept number that 
+# already exists in the Manager's file, the user will have the option of 
+# updating the existing data or enter a different dept number.
+# * The program will check to make sure that the dept number and employee
+# id are valid integers.
+# * Once the user enters all the details about the new manager entry,
+# the program will add the new entry to the Managers file and it will
+# sort the file by dept number and display the updated list
+# * The user can then add another entry or type EXIT to end the program.
+#
+# Example of the program:
+# Please enter the dept number: (user enters some number like 14)
+# Once all details are entered, the output will look like this...
+# Joe Worker:489:14:Manufacturing
+
+#
+# Exiting the program with an error
+error () {
+    # error: output an error message and return
+    # the error messages contain the program name
+    # and are written to standard error
+
+    local prog=$(basename $0)
+    echo -e "$prog: $*">&2
+}
+
+fatal() {
+    # fatal: output an error message and then exit
+    # the error() function is used.
+    error "$*"
+    # if you want to output a message about how to successfully
+    # run your program (called a 'usage message'), this wouldlocal input
+    # now exit with an error
+    exit 1
+}
+askint() {
+    local input
+    while :; do
+        read -p "$1" input
+        [ -z "$input" ] && return 1
+        if [ "$input" = "EXIT" ]; then
+            echo "EXIT"
+            return 1 
+        elif echo "$input" |  grep -q "^[[:digit:]]\+$"; then
+            echo "$input"
+            return 0
+        fi
+        error "$input is not a number"
+    done
+}
+
+Sourcedir=/pub/cs/gboyd/cs160b/asmt03
+
+# Needs the file Manager when launched
+echo "Welcome! Let me check if the Manager file is available."
+# Check to see if the file is available in the current directory
+if [ ! -e Managers ]; then
+    echo "Oops! Manager file is not in current directory. Let me copy if from Source..."
+    cp "$Sourcedir"/Managers . 
+# If not, then copy from Sourcedi
+fi
+
+echo "Ok checking permissions now..."
+# Do some tests to make sure that you have perm to it otherwise exit with fatal msg
+# [ ! -r Managers ] && fatal "Looks like this file is not for your eyes! You don't have read permissions!"
+# [ ! -w Managers ] && fatal "Sorry, you can't write to Managers! Need write permissions!"
+[ ! -r Managers -a ! -w Managers ] && fatal "Oh dear, looks like you don't have both read and write permissions to Manager!"
+
+echo "Looks like everything checks out ok!"
+echo ""
+echo "***** You can type EXIT anytime to end the program. *****"
+echo ""
+
+# *** Enter new records ***  
+while :; do
+# Prompt user to enter dept number
+    dept=$(askint "Please enter the Department number: ")
+
+# Check to see if that dept number is already in the system (prob grep), if already exist, prompt enter new 
+    match=$(cut -d: -f3 Managers | grep "^$dept$")
+    display=$(grep "[:][[:digit:]]\+[:]$dept[:]" Managers )
+    if [ "$dept" = "EXIT" ]; then 
+        fatal "Bye!"
+    elif echo "$dept" | grep -q "[[:digit:]]\+"; then
+        while :; do
+            if [ "$dept" = "$match" ]; then
+                echo "$display"
+                while :; do
+                    read -p "Dept $dept already exist, overwrite?" input
+                    case "$input" in
+                    [Yy]*) grep -v "$display" Managers > /tmp/managersmv
+                           mv /tmp/managersmv Managers
+                           break;;
+                    [Nn]*) break 2;;
+                    *)    error "Enter yes or no" ;;
+                    esac
+                done
+            fi 
+
+# Dept Name
+        while :; do
+            read -p "Please enter the Department name: " d_name
+            if [ -z "$d_name" ]; then
+                echo "Oops, I didn't get a department name!"
+            elif [ "$d_name" = "EXIT" ]; then
+                fatal "Bye!"
+            else
+                break    
+            fi
+        done
+
+# Manager's Name
+        while :; do
+            read -p "Please enter the Manager's name: " m_name
+            if [ -z "$m_name" ]; then
+                echo "Oops, I didn't get the Manager's name!"
+            elif [ "$m_name" = "EXIT" ]; then
+                fatal "Bye!"
+            else
+                break
+            fi
+        done
+
+# Manager's employee ID
+        while :; do
+            me_id=$(askint "Please enter the Manager's employee ID: ")
+            if [ "$me_id" = "EXIT" ]; then
+                fatal "Bye!"
+            else
+                break
+            fi
+        done
+
+# Sort the Managers file and display with a message
+    echo "$m_name:$me_id:$dept:$d_name" >> Managers
+
+    sort -t: -k3n -o Managers Managers
+    echo ""
+    echo "Here is the updated Managers file:"
+    cat Managers
+    echo ""
+    break
+    done
+    fi
+echo "Add another entry or type EXIT to end the program."
+done
+

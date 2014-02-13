@@ -1,0 +1,52 @@
+Script started on Tue 12 Nov 2013 04:00:27 PM PST
+[tho36@hills ~]$ # Thuong Ho Assignment Two
+[tho36@hills ~]$ 
+[tho36@hills ~]$ date
+Tue Nov 12 16:01:19 PST 2013
+[tho36@hills ~]$ 
+[tho36@hills ~]$ id
+uid=27302(tho36) gid=590(b20137) groups=590(b20137),7025(c71768),7097(c74418),7107(c74686),7109(c74688)
+[tho36@hills ~]$ 
+[tho36@hills ~]$ pwd
+/students/tho36
+[tho36@hills ~]$ 
+[tho36@hills ~]$ chk -f
+chk: Two arguments required. Follow format chk -f filename or chk -u username
+[tho36@hills ~]$ chk -f chk
+chk is a file
+chk is readable
+chk is writable
+chk is executable
+[tho36@hills ~]$ 
+[tho36@hills ~]$ check   ck  k -f .
+. is a directory
+. is readable
+. is writable
+. is executable
+[tho36@hills ~]$ chk -f /dev/null
+sed: -e expression #1, char 18: unknown option to `s'
+Wow you've just discovered /dev/null! It's an unknown object
+/dev/null is readable
+/dev/null is writable
+/dev/null is not executable
+[tho36@hills ~]$ a bu  g :(! :([tho36@hills ~]$ a bug! [tho36@hills ~]$ a bug! :[tho36@hills ~]$ a bug! :(
+bash: syntax error near unexpected token `('
+[tho36@hills ~]$ 
+[tho36@hills ~]$ chk -f mood d/ 
+chk: mood is a symbolic link!
+[tho36@hills ~]$ chk -f "my s resume"
+chk: my resume is not part of this universe, it doesn't exist!
+[tho36@hills ~]$ 
+[tho36@hills ~]$ chk -u g  boyd
+gboyd's home directory is /users/gboyd
+gboyd was last logged on Tue Nov 12 13:10 - 15:25  (02:14)    
+[tho36@hills ~]$ 
+[tho36@hills ~]$ chk -u greg
+chk: ERROR: greg does not exist in the system!
+[tho36@hills ~]$ 
+[tho36@hills ~]$ chk -d gboyd
+chk: Please choose either the -u or -d option
+[tho36@hills ~]$ exit
+exit
+
+Script done on Tue 12 Nov 2013 04:04:48 PM PST

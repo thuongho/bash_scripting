@@ -1,0 +1,160 @@
+Script started on Thu 31 Oct 2013 06:18:57 PM PDT
+[tho36@hills ~]$ id
+uid=27302(tho36) gid=590(b20137) groups=590(b20137),7025(c71768),7097(c74418),7107(c74686),7109(c74688)
+[tho36@hills ~]$ 
+[tho36@hills ~]$ # this inclues    des ptabrizi
+[tho36@hills ~]$ 
+[tho36@hills ~]$ pwd
+/students/tho36
+[tho36@hills ~]$ 
+[tho36@hills ~]$ date
+Thu Oct 31 18:19:39 PDT 2013
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ # **** step one ****
+[tho36@hills ~]$ grep 'tho36' /etc/passwd
+tho36:x:27302:590:Tune,The lonely planet,127.0.0.1,127.0.0.1:/students/tho36:/bin/bash
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ # **** step two **** 
+[tho36@hills ~]$ echo $PATH
+/usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/students/tho36/bin:.
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ # **** step three ****
+[tho36@hills ~]$ uptime
+ 18:20:13 up 47 days, 19:55, 38 users,  load average: 0.00, 0.01, 0.00
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ # **** step four ****
+[tho36@hills ~]$ last -2 $LOGNAME
+tho36    pts/11                        Thu Oct 31 18:18   still logged in   
+tho36    pts/0                         Thu Oct 31 18:17 - 18:18  (00:00)    
+
+wtmp begins Tue Oct  1 04:12:48 2013
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ # **** step five **** 
+[tho36@hills ~]$ df
+Filesystem           1K-blocks      Used Available Use% Mounted on
+/dev/mapper/vg00-lv_root
+                      24770940   1163824  22348828   5% /
+tmpfs                 24707328   2576664  22130664  11% /dev/shm
+/dev/sda1               495844     64814    405430  14% /boot
+/dev/mapper/vg00-lv_home
+                       8256952    686724   7150800   9% /home
+/dev/mapper/vg00-lv_logs
+                      12385456   2679992   9076320  23% /logs
+/dev/mapper/vg00-lv_opt
+                      12385456   2004040   9752272  18% /opt
+/dev/mapper/vg00-lv_ora1
+                      33027952  13232380  18117852  43% /oracle
+/dev/mapper/vg00-lv_tmp
+                      10321208    284664   9512256   3% /tmp
+/dev/mapper/vg00-lv_usr
+                      12385456   3782072   7974240  33% /usr
+/dev/mapper/vg00-lv_local
+                      24770940   6577008  16935644  28% /usr/local
+/dev/mapper/vg00-lv_var
+                      24770940  22991592    521060  98% /var
+/dev/mapper/vg00-lv_spcwww
+                        495844    281670    188574  60% /spcwww
+/dev/mapper/vg00-lv_dbora1
+                       8256952   7598612    238912  97% /csora
+/dev/mapper/vg00-lv_users
+                      22706684   6437216  15116036  30% /users
+/dev/mapper/vg00-lv_students
+                      72248648  46270220  22308412  68% /students
+/dev/mapper/vg00-lv_clubmail
+                       1032088    205784    773876  22% /clubmail
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ # **** step six ****
+[tho36@hills ~]$ ./aboutme
+Hello Tune
+You are logged into hills.ccsf.cc.ca.us
+You last logged on at:
+tho36 pts/11 Thu Oct 31 18:18 still logged in
+You have 28 local and 31 environment variables defined
+The directories in your search path are:
+/usr/lib64/qt-3.3/bin
+/usr/local/bin
+/bin
+/usr/bin
+/usr/local/sbin
+/usr/sbin
+/sbin
+/students/tho36/bin
+.
+Currently, the system load average for one minute is 0.00
+The system has been up  18:20:44 up 47 days, 19:55
+The filesystem you are currently on /students
+The percent of free space is 32%
+There are currently 21785 MB of free space on /students
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ # **** step seven ****
+[tho36@hills ~]$ cd /boot
+[tho36@hills boot]$ 
+[tho36@hills boot]$ / ./aboutme
+bash: ./aboutme: No such file or directory
+[tho36@hills boot]$ 
+[tho36@hills boot]$ ~/./aboutme
+Hello Tune
+You are logged into hills.ccsf.cc.ca.us
+You last logged on at:
+tho36 pts/11 Thu Oct 31 18:18 still logged in
+You have 28 local and 31 environment variables defined
+The directories in your search path are:
+/usr/lib64/qt-3.3/bin
+/usr/local/bin
+/bin
+/usr/bin
+/usr/local/sbin
+/usr/sbin
+/sbin
+/students/tho36/bin
+.
+Currently, the system load average for one minute is 0.00
+The system has been up  18:21:15 up 47 days, 19:56
+The filesystem you are currently on /boot
+The percent of free space is 86%
+There are currently 395 MB of free space on /boot
+[tho36@hills boot]$ 
+[tho36@hills boot]$ 
+[tho36@hills boot]$ # **** step eight ****
+[tho36@hills boot]$ cd
+[tho36@hills ~]$ 
+[tho36@hills ~]$ LOGNAME=
+[tho36@hills ~]$ 
+[tho36@hills ~]$ ./aboutme
+sed: -e expression #1, char 0: no previous regular expression
+Hello
+You are logged into hills.ccsf.cc.ca.us
+You last logged on at:
+Thu Oct 31 18:20 still logged in
+You have 28 local and 31 environment variables defined
+The directories in your search path are:
+/usr/lib64/qt-3.3/bin
+/usr/local/bin
+/bin
+/usr/bin
+/usr/local/sbin
+/usr/sbin
+/sbin
+/students/tho36/bin
+.
+Currently, the system load average for one minute is 0.00
+The system has been up  18:21:45 up 47 days, 19:56
+The filesystem you are currently on /students
+The percent of free space is 32%
+There are currently 21785 MB of free space on /students
+[tho36@hills ~]$ 
+[tho36@hills ~]$ 
+[tho36@hills ~]$ exit
+exit
+
+Script done on Thu 31 Oct 2013 06:21:49 PM PDT
